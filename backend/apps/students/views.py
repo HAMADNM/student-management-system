@@ -76,6 +76,21 @@ class StudentRestoreView(generics.GenericAPIView):
         )
 
 
+class StudentPermanentDeleteView(generics.GenericAPIView):
+    serializer_class = StudentSerializer
+    permission_classes = [IsAdminUserOnly]
+    queryset = Student.objects.filter(is_active=False)
+
+    def delete(self, request, pk):
+        student = self.get_object()
+        student.delete()
+
+        return Response(
+            {"message": "Student permanently deleted successfully"},
+            status=status.HTTP_200_OK,
+        )
+
+
 class StudentAdminSearchView(generics.ListAPIView):
     serializer_class = StudentSerializer
     pagination_class = StudentPagination

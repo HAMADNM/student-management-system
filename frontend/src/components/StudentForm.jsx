@@ -29,8 +29,8 @@ function StudentForm({ initialValues = initialState, onSubmit, submitLabel, busy
       nextErrors.date_of_birth = "Date of birth cannot be in the future.";
     }
     if (!values.grade.trim()) nextErrors.grade = "Grade is required.";
-    if (values.phone && !/^\d+$/.test(values.phone)) {
-      nextErrors.phone = "Phone must contain only digits.";
+    if (values.phone && values.phone.length > 15) {
+      nextErrors.phone = "Phone cannot exceed 15 characters.";
     }
 
     setErrors(nextErrors);

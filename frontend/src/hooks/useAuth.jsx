@@ -1,10 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const AuthContext = createContext(null);
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api";
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = configuredApiBaseUrl?.replace(/\/$/, "");
 const ACCESS_KEY = "student_mgmt_access_token";
 const REFRESH_KEY = "student_mgmt_refresh_token";
 const USER_KEY = "student_mgmt_user";
+
+if (!API_BASE_URL) {
+  throw new Error("Missing VITE_API_BASE_URL. Set it to your backend API URL, for example https://student-management-system-jxvi.onrender.com/api.");
+}
 
 function getStoredToken() {
   return localStorage.getItem(ACCESS_KEY);

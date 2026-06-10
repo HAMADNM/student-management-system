@@ -24,8 +24,10 @@ npm run dev
 The frontend expects the backend API base URL in `.env`:
 
 ```env
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
+VITE_API_BASE_URL=https://student-management-system-jxvi.onrender.com/api
 ```
+
+Set the same `VITE_API_BASE_URL` value in Vercel project environment variables before building for deployment.
 
 ## Pages
 
@@ -42,8 +44,8 @@ VITE_API_BASE_URL=http://127.0.0.1:8000/api
 - Logout calls `/api/auth/logout/` with the refresh token, then clears local session state.
 - Dashboard and active roster reads use `/api/students/`.
 - Student filtering supports `search`, `grade`, `first_name`, `last_name`, `email`, `ordering`, `page`, and `page_size`.
-- The inactive-record search and restore flow uses admin-only endpoints: `/api/students/search/` and `/api/students/:id/restore/`.
-- Create, update, delete, inactive search, and restore require a Django staff account. Non-staff accounts can read active students.
+- The inactive-record search, restore, and permanent delete flow uses admin-only endpoints: `/api/students/search/`, `/api/students/:id/restore/`, and `/api/students/:id/permanent-delete/`.
+- Create, update, delete, inactive search, restore, and permanent delete require a Django staff account. Non-staff accounts can read active students.
 
 ## Palette
 

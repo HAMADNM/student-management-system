@@ -1,20 +1,39 @@
+# --- Python / Django ---
 venv/
+myvenv/
 __pycache__/
 *.py[cod]
 *.sqlite3
-.env
-staticfiles/
 *.log
+.env
+.env.local
+.env.*.local
 
-# Django
+# Django static & media
+staticfiles/
 media/
+# Coverage reports
 .coverage
 htmlcov/
 
-# IDE
+# Django migrations (optional: keep if you want them in Git)
+*/migrations/__pycache__/
+*/migrations/*.pyc
+# Uncomment below if you don’t want migrations tracked
+# */migrations/
+
+# --- Frontend / React ---
+node_modules/
+build/
+dist/
+*.lock
+*.cache
+*.tsbuildinfo
+
+# --- IDE / Editor ---
 .vscode/
 .idea/
 
-# OS
+# --- OS junk ---
 Thumbs.db
 .DS_Store

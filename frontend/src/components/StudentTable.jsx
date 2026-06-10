@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function StudentTable({ students, onDelete, onRestore }) {
+function StudentTable({ students, onDelete, onPermanentDelete, onRestore }) {
   if (students.length === 0) {
     return <div className="empty-state">No students found.</div>;
   }
@@ -33,20 +33,25 @@ function StudentTable({ students, onDelete, onRestore }) {
                 </span>
               </td>
               <td className="actions-col">
-                <div className="row-actions">
+                <div className={`row-actions ${student.is_active ? "active-actions" : "inactive-actions"}`}>
                   {student.is_active && (
                     <Link className="btn small" to={`/students/${student.id}/edit`}>
                       Edit
                     </Link>
                   )}
                   {student.is_active ? (
-                    <button className="btn danger small" onClick={() => onDelete(student)}>
+                    <button type="button" className="btn danger small" onClick={() => onDelete(student)}>
                       Delete
                     </button>
                   ) : (
-                    <button className="btn secondary small" onClick={() => onRestore(student.id)}>
-                      Restore
-                    </button>
+                    <>
+                      <button type="button" className="btn secondary small" onClick={() => onRestore(student.id)}>
+                        Restore
+                      </button>
+                      <button type="button" className="btn danger small" onClick={() => onPermanentDelete(student)}>
+                        Permanent Delete
+                      </button>
+                    </>
                   )}
                 </div>
               </td>

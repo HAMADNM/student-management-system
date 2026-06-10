@@ -24,6 +24,7 @@ function StudentListPage() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [studentToDelete, setStudentToDelete] = useState(null);
+  const [studentToPermanentlyDelete, setStudentToPermanentlyDelete] = useState(null);
   const { authenticatedFetch, API_BASE_URL } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -100,6 +101,10 @@ function StudentListPage() {
     setStudentToDelete(student);
   };
 
+  const handlePermanentDelete = (student) => {
+    setStudentToPermanentlyDelete(student);
+  };
+
   const confirmDelete = async () => {
     if (!studentToDelete) return;
 
@@ -108,8 +113,26 @@ function StudentListPage() {
         method: "DELETE",
       });
       await readJsonResponse(resp, "Unable to delete student.");
-      setSuccessMessage("Student deleted successfully.");
+      const inactiveFilters = { ...appliedFilters, admin: true, is_active: "false" };
+      setDraftFilters(inactiveFilters);
+      setAppliedFilters(inactiveFilters);
+      setSuccessMessage("Student moved to inactive records. You can now restore or permanently delete it.");
       setStudentToDelete(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const confirmPermanentDelete = async () => {
+    if (!studentToPermanentlyDelete) return;
+
+    try {
+      const resp = await authenticatedFetch(`${API_BASE_URL}/students/${studentToPermanentlyDelete.id}/permanent-delete/`, {
+        method: "DELETE",
+      });
+      await readJsonResponse(resp, "Unable to permanently delete student.");
+      setSuccessMessage("Student permanently deleted successfully.");
+      setStudentToPermanentlyDelete(null);
       await loadStudents(meta.page);
     } catch (err) {
       setError(err.message);
@@ -211,7 +234,12 @@ function StudentListPage() {
             <span>{meta.count} record{meta.count === 1 ? "" : "s"}</span>
             <span>Page {meta.page}</span>
           </div>
-          <StudentTable students={students} onDelete={handleDelete} onRestore={handleRestore} />
+          <StudentTable
+            students={students}
+            onDelete={handleDelete}
+            onPermanentDelete={handlePermanentDelete}
+            onRestore={handleRestore}
+          />
           <div className="pagination">
             <button className="btn secondary" disabled={!meta.previous} onClick={() => loadStudents(meta.page - 1)}>
               Previous
@@ -243,6 +271,32 @@ function StudentListPage() {
               </button>
               <button type="button" className="btn danger" onClick={confirmDelete}>
                 Delete Student
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {studentToPermanentlyDelete && (
+        <div className="modal-backdrop" role="presentation">
+          <div className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="permanent-delete-title">
+            <div className="confirm-icon">!</div>
+            <div>
+              <h3 id="permanent-delete-title">Permanently delete student?</h3>
+              <p>
+                This will permanently remove{" "}
+                <strong>
+                  {studentToPermanentlyDelete.first_name} {studentToPermanentlyDelete.last_name}
+                </strong>{" "}
+                from the system. This action cannot be undone.
+              </p>
+            </div>
+            <div className="confirm-actions">
+              <button type="button" className="btn secondary" onClick={() => setStudentToPermanentlyDelete(null)}>
+                Cancel
+              </button>
+              <button type="button" className="btn danger" onClick={confirmPermanentDelete}>
+                Permanent Delete
               </button>
             </div>
           </div>

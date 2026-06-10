@@ -518,13 +518,35 @@ tbody tr:hover {
 }
 
 .actions-col {
-  width: 190px;
+  width: 300px;
+  text-align: right;
 }
 
 .row-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+}
+
+.row-actions .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.inactive-actions {
+  display: grid;
+  grid-template-columns: minmax(92px, 1fr) minmax(148px, 1.35fr);
+  justify-content: end;
+  width: min(100%, 260px);
+  margin-left: auto;
+}
+
+.inactive-actions .btn {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 10px;
 }
 
 .status {
@@ -762,6 +784,15 @@ tbody tr:hover {
 
   .confirm-actions .btn {
     width: 100%;
+  }
+
+  .actions-col {
+    width: 260px;
+  }
+
+  .inactive-actions {
+    grid-template-columns: 1fr;
+    width: min(100%, 180px);
   }
 
   .sidebar {

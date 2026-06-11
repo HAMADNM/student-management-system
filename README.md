@@ -1,185 +1,274 @@
-# Student Management System API
+# School Management System – Student Management Module
 
-A secure and scalable Student Management System API built with **Django REST Framework (DRF)**. This project demonstrates modern backend development practices including **JWT-based authentication**, **Role-Based Access Control (RBAC)**, **Soft Delete & Restore**, **Search**, **Filtering**, **Ordering**, and **Pagination**.
+A full-stack Student Management System built using React, Django REST Framework, PostgreSQL, and JWT Authentication.
 
-## Overview
+## Live Demo
 
-The Student Management System provides a centralized platform for managing student records through a RESTful API. The application implements secure authentication and authorization mechanisms while maintaining data integrity through soft deletion and restoration capabilities.
+Frontend:
+https://student-management-system-nine-wheat.vercel.app/
 
-## Key Features
+Backend:
+https://student-management-system-jxvi.onrender.com
 
-### Authentication & Security
+### Admin Credentials
 
-* JWT Authentication using Simple JWT
-* Access Token Refresh
-* Secure Logout with Token Blacklisting
-* Role-Based Access Control (RBAC)
-* Custom Permission Classes
+Username: admin
+
+Password: admin123
+
+---
+
+## Important Note
+
+The backend is hosted on Render Free Tier.
+
+The first API request after inactivity may take 30–60 seconds to respond while the server wakes up. Subsequent requests will be much faster.
+
+---
+
+## Features
+
+### Authentication
+
+* JWT Login
+* Token Refresh
+* Logout with Refresh Token Blacklisting
 
 ### Student Management
 
-* Create Student Records
-* Retrieve Student Information
-* Update Student Details
-* Soft Delete Students
-* Restore Deleted Records
+* Create Student
+* View Student
+* Update Student
+* Delete Student (Soft Delete)
+* Restore Student
+* Permanent Delete Student
+* Pagination
+* Search
+* Filtering
+* Ordering
 
-### Data Management
+### Security
 
-* Search Functionality
-* Advanced Filtering
-* Custom Ordering
-* Pagination Support
+* Role-Based Access Control
+* Admin-Only Protected Actions
+* JWT Authentication
 
-### API Design
-
-* RESTful Architecture
-* Modular Project Structure
-* Environment-Based Configuration
-* Production-Ready Design
+---
 
 ## Technology Stack
 
-| Category        | Technologies                                  |
-| --------------- | --------------------------------------------- |
-| Backend         | Python, Django, Django REST Framework         |
-| Authentication  | Simple JWT                                    |
-| Database        | SQLite (Development), PostgreSQL (Production) |
-| Deployment      | Render, Vercel                                |
-| Version Control | Git, GitHub                                   |
+### Frontend
 
-## Project Structure
+* React
+* Axios
+* React Router
 
-```text
-student-management-system/
-│
-├── apps/
-│   ├── accounts/
-│   ├── students/
-│   └── core/
-│
-├── config/
-├── manage.py
-├── requirements.txt
-├── .env.example
-└── README.md
-```
+### Backend
+
+* Django
+* Django REST Framework
+* Simple JWT
+
+### Database
+
+* PostgreSQL
+
+### Deployment
+
+* Vercel
+* Render
+
+### API Testing
+
+* Postman
+
+---
 
 ## API Endpoints
 
 ### Authentication
 
-| Method | Endpoint             | Description          |
-| ------ | -------------------- | -------------------- |
-| POST   | `/api/auth/login/`   | User Login           |
-| POST   | `/api/auth/refresh/` | Refresh Access Token |
-| POST   | `/api/auth/logout/`  | Logout User          |
+POST /api/auth/login/
+
+POST /api/auth/refresh/
+
+POST /api/auth/logout/
+
+---
 
 ### Students
 
-| Method    | Endpoint                      | Description           |
-| --------- | ----------------------------- | --------------------- |
-| GET       | `/api/students/`              | List Students         |
-| POST      | `/api/students/`              | Create Student        |
-| GET       | `/api/students/{id}/`         | Retrieve Student      |
-| PUT/PATCH | `/api/students/{id}/`         | Update Student        |
-| DELETE    | `/api/students/{id}/`         | Soft Delete Student   |
-| PATCH     | `/api/students/{id}/restore/` | Restore Student       |
-| GET       | `/api/students/admin/search/` | Admin Search & Filter |
+GET /api/students/
 
-## Access Control
+POST /api/students/
 
-### Administrator
+GET /api/students/{id}/
 
-* Create Student Records
-* Update Student Records
-* Soft Delete Students
-* Restore Students
-* Access Administrative Search Features
+PUT /api/students/{id}/
 
-### Authenticated Users
+PATCH /api/students/{id}/
 
-* View Student Information
+DELETE /api/students/{id}/
 
-## Query Parameters
+PATCH /api/students/{id}/restore/
 
-### Search
+DELETE /api/students/{id}/permanent-delete/
 
-```http
-?search=john
-```
+GET /api/students/search/
 
-### Ordering
+---
 
-```http
-?ordering=first_name
-```
+### Health Check
 
-```http
-?ordering=-created_at
-```
+GET /health/
 
-### Filtering
+GET /api/health/
 
-```http
-?grade=A
-?email=gmail.com
-?first_name=John
-?last_name=Doe
-```
+---
 
-### Admin Filters
+## Search & Filtering
 
-```http
-?is_active=true
-?is_active=false
-```
+Supported Query Parameters
 
-## Local Setup
+* first_name
+* last_name
+* email
+* grade
+* is_active
+
+Example:
+
+GET /api/students/search/?grade=10
+
+GET /api/students/search/?is_active=false
+
+GET /api/students/search/?first_name=john
+
+---
+
+## Ordering
+
+Supported Ordering Fields
+
+* first_name
+* last_name
+* grade
+* created_at
+* updated_at
+
+Example:
+
+GET /api/students/?ordering=first_name
+
+GET /api/students/search/?ordering=-created_at
+
+---
+
+## Installation
+
+### Backend
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/student-management-system.git
+git clone https://github.com/HAMADNM/student-management-system.git
 
-cd student-management-system
+cd backend
 
 python -m venv venv
 
 source venv/bin/activate
+```
 
+Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+Configure Environment Variables
+
+```env
+SECRET_KEY=
+
+DEBUG=
+
+DATABASE_URL=
+
+ALLOWED_HOSTS=
+
+CORS_ALLOWED_ORIGINS=
+```
+
+Run Migrations
+
+```bash
 python manage.py migrate
+```
 
+Create Superuser
+
+```bash
 python manage.py createsuperuser
+```
 
+Run Server
+
+```bash
 python manage.py runserver
 ```
 
-## Deployment
+---
 
-| Service     | Platform   |
-| ----------- | ---------- |
-| Backend API | Render     |
-| Frontend    | Vercel     |
-| Database    | PostgreSQL |
+### Frontend
 
-## Future Enhancements
+```bash
+cd frontend
 
-* API Documentation (Swagger/OpenAPI)
-* Automated Testing
-* Docker Support
-* CI/CD Pipeline
-* Audit Logging
+npm install
+
+npm run dev
+```
+
+---
+
+## Project Structure
+
+backend/
+├── apps/
+│ ├── accounts/
+│ ├── students/
+│ └── core/
+├── school_mgmt/
+└── manage.py
+
+frontend/
+├── src/
+├── components/
+├── pages/
+└── services/
+
+---
+
+## Submission Highlights
+
+* Full CRUD Implementation
+* JWT Authentication
+* Soft Delete & Restore
+* Permanent Delete
+* Search & Filtering
+* Pagination
+* PostgreSQL Integration
+* API Testing with Postman
+* Responsive React UI
+* Production Deployment on Vercel & Render
+
+---
 
 ## Author
 
-**Hamad N M**
+Hamad N M
 
-Computer Science & Engineering Graduate
-Python Full Stack Developer
+Email: [hamadmoideen111@gmail.com](mailto:hamadmoideen111@gmail.com)
+
+GitHub: https://github.com/HAMADNM
 
 LinkedIn: https://www.linkedin.com/in/hamadnm
-
-## License
-
-This project is intended for educational, portfolio, and demonstration purposes.
